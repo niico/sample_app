@@ -15,6 +15,11 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
 
+  it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
+  it { should respond_to(:authenticate) }  
+
+
   it { should be_valid }
 
   describe "when name is not present" do
@@ -77,11 +82,7 @@ describe User do
     before { @user.password_confirmation = nil }
     it { should_not be_valid }
   end
-
-
-
-  it { should respond_to(:authenticate) }
-  
+ 
   describe "with a password that's too short" do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
@@ -101,6 +102,11 @@ describe User do
       it { should_not == user_for_invalid_password }
       specify { user_for_invalid_password.should be_false }
     end
+  end
+
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
   end
 
 
